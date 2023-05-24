@@ -22,7 +22,11 @@ export const CommentCard = ({ data }) => {
                     <b style={{ fontSize: "1rem" }}>{data.Data.visitor}</b><br />
                     {data.Data.message}
                 </span>
-                <hr />
+                <hr style={{
+                  width: "95%",
+                  border: "0.1px solid #ececec",
+                  marginTop: "20px",
+                }} />
             </div>
 
         </div>

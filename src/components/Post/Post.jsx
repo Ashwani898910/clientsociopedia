@@ -7,31 +7,33 @@ import { likePost } from "../../api/PostsRequests";
 import { useSelector, useDispatch } from "react-redux";
 import Comment from "../../img/comment.png";
 import SubmitIcon from "../../img/uploadComment.png"
-import { getPost } from "../../api/PostsRequests";
+//import { getPost } from "../../api/PostsRequests";
 import { CommentCard } from "../CommentCard/CommentCard";
 import { commentOnPost } from '../../api/PostsRequests';
+import InputEmoji from 'react-input-emoji'
 
 const Post = ({ data }) => {
   const { user } = useSelector((state) => state.authReducer.authData);
   // const { comments } = useSelector((state) => state.commentReducer.Comments);
   const [liked, setLiked] = useState(data.likes.includes(user._id));
   const [likes, setLikes] = useState(data.likes.length);
-  const [newComment, setNewComment] = useState(data.comments);
-  const [message, setMessage] = useState("");
+  const [newComment, setNewComment] = useState([...data.comments]);
+  //const [message, setMessage] = useState("");
   const [show, setShow] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [changebtn, setChangebtn] = useState("dis-icon")
+  const [formData, setFormData] = useState("");
+  const dispatch = useDispatch();
+  let message = "";
 
-
-
-
+  // handle clike and unlike
   const handleLike = () => {
-    //help in api call
     likePost(data._id, user._id);
     setLiked((prev) => !prev);
     liked ? setLikes((prev) => prev - 1) : setLikes((prev) => prev + 1)
   };
-  const handleComments = () => {
+  // handle Hide  And Show Comments 
+  const HideAndShowComments = () => {
     if (show) {
       setShow(false);
     }
@@ -39,12 +41,10 @@ const Post = ({ data }) => {
       setShow(true);
     }
   }
-  //input comment hendle
-  const [formData, setFormData] = useState("");
-
-  const dispatch = useDispatch();
-  const handlechange = (e) => {
-    setFormData(e.target.value);
+  //input comment handle
+  const handlechange = (formData) => {
+    setFormData(formData);
+    // console.log(formData);
     if (formData.length >= 3) {
       setChangebtn("c-icon")
     }
@@ -54,16 +54,35 @@ const Post = ({ data }) => {
 
   }
 
-  //console.log(data);
-  // let message = "";
-  const handlePostComment = () => {
+  // Handle Submit Comment
+  const HandleSubmitComment = () => {
     // e.preventDefault();
     const userId = user._id;
-    setMessage(formData);
+    console.log(formData)
+    message = formData
+    console.log(message);
     setFormData("");
     const post = data;
     setRefresh(true);
-    //console.log(post._id);
+    const CommentNew = {
+      _id:"",
+      visitorId:user._id,
+      message: message,
+      visitor: `${user.firstname} ${user.lastname}`,
+      image: user.profilePicture
+    }
+    console.log(newComment.length);
+    if(message!=""){
+      //console.log(data.comments);
+      data.comments.push(CommentNew);
+     // console.log(newComment);
+
+     }
+     //else{
+    //   setNewComment(newComment.push(CommentNew));
+
+    // }
+    // console.log(newComment);
     try {
 
       dispatch(commentOnPost(post._id, { userId, message }));
@@ -71,18 +90,6 @@ const Post = ({ data }) => {
       console.log(err);
     }
   }
-  console.log(message);
-  if (refresh) {
-    console.log(user);
-    const CommentNew = {
-      message: message,
-      visitor: `${user.firstname} ${user.lastname}`,
-      image: user.profilePicture
-    }
-    newComment.push(CommentNew);
-
-  }
-  console.log(newComment);
   return (
     <div className="Post">
       <img
@@ -99,7 +106,7 @@ const Post = ({ data }) => {
         />
         <img
           src={Comment} alt=""
-          onClick={handleComments}
+          onClick={HideAndShowComments}
         />
         <img src={Share} alt="" />
       </div>
@@ -144,8 +151,13 @@ const Post = ({ data }) => {
               src={user.profilePicture ? process.env.REACT_APP_PUBLIC_FOLDER + user.profilePicture : ""} alt="" />
           </div>
           <div class="Search">
-            <input type="text" className="placeholder" name="message" placeholder="write a comment . . ." value={formData} onChange={handlechange} />
-            <div id="subtmitbtn" class={changebtn} onClick={handlePostComment}>
+            <InputEmoji
+              value={formData}
+              onChange={handlechange}
+
+            />
+            {/* <input type="text" className="placeholder" name="message" placeholder="write a comment . . ." value={formData} onChange={handlechange} /> */}
+            <div id="subtmitbtn" class={changebtn} onClick={HandleSubmitComment}>
               <img className="CommentIcon" src={SubmitIcon} alt="" />
             </div>
           </div>
