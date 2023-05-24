@@ -1,0 +1,96 @@
+.Post {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background-color: var(--cardColor);
+    border-radius: 1rem;
+    gap: 1rem;
+
+    --user-photo-size: 55px;
+    --user-photo-size-small: calc(var(--user-photo-size) * 0.8);
+    --clr-input: #3a3b3c;
+    --opacity-level: 0.8;
+    --gap: 0.5rem;
+}
+
+.Post>img {
+    width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+.postReact {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+}
+
+.card-comment-input {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--gap);
+    position: relative;
+}
+
+.c-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--buttonIcon);
+    border-radius: 5px;
+    padding: 4px;
+    color: white;
+}
+
+.dis-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    padding: 4px;
+    color: white;
+}
+
+.current-user-profile-image img {
+    width: var(--user-photo-size);
+    border-radius: calc(var(--user-photo-size) / 2);
+}
+
+.current-user-profile-image--small img {
+    width: var(--user-photo-size-small);
+    border-radius: calc(var(--user-photo-size-small) / 2);
+}
+
+.comment-input-box {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    background-color: var(--clr-input);
+    font-size: large;
+    padding: 0 1rem;
+    border-radius: 1.5rem;
+    margin-bottom: 0.2rem;
+    align-items: center;
+}
+
+.card-comment-input {
+    padding: 0;
+}
+
+hr {
+    height: 0.5px;
+    background-color: #948a8a;
+    width: 100%;
+    border: none;
+}
+
+.placeholder {
+
+    width: 565px !important;
+    background: #3a3b3c
+}
+
+.CommentIcon {
+    width: 30px;
+    height: 30px;
+}
